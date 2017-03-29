@@ -1,0 +1,93 @@
+.profile > div {
+    background: #fff;
+}
+
+.pro {
+    position: relative;
+    padding: 2.5rem 1rem;
+    background: #fff;
+}
+
+.pro .pro-head {
+    position: absolute;
+    top: 1rem;
+    border-radius: 50%;
+    height: 4rem;
+    width: 4rem;
+    display: block;
+    background: #ddd;
+}
+
+.pro .pro-to {
+    position: relative;
+    left: 5.5rem;
+    margin-right: 6rem;
+}
+
+.pro .pro-to a {
+    position: relative;
+    display: block;
+    font-size: 1.3rem;
+}
+
+.pro .pro-to .r {
+    position: absolute;
+    right: 0;
+    color: #999;
+    margin-right: 1rem;
+}
+
+.pro .pro-to span {
+    position: relative;
+}
+
+.pro .pro-head {
+}
+
+.nav {
+}
+
+.nav .nav-row:last-child a {
+    border-bottom: none;
+}
+
+.nav .nav-row a {
+    font-size: 1.5rem;
+    border-bottom: 1px solid #F6F6F9;
+    border-left: 1px solid #F6F6F9;
+    display: block;
+    padding: .8rem 0;
+}
+
+.nav .nav-warp {
+}
+
+.nav .nav-icon {
+    width: 8rem;
+    height: 2rem;
+    display: block;
+    background: #ddd;
+    margin: 1rem;
+}
+
+.nav .nav-title {
+    text-align: left;
+}
+
+.del .nav-title {
+    margin-top: -.5rem;
+}
+
+.nav .nav-title span {
+    display: block;
+}
+
+.nav .nav-name {
+    margin: 1rem 0;
+}
+
+.nav .nav-sub {
+    font-size: 1rem;
+    color: #999;
+    margin-top: -.8rem;
+}
