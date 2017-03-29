@@ -9,6 +9,10 @@
     padding: 0.5rem 1.2rem;
 }
 
+.seach-head {
+    border-bottom: 1px solid #F0F0F0;
+}
+
 .search-wrap {
     background: #F0F0F0;
     border-radius: 6px;
@@ -46,8 +50,8 @@
 }
 
 .search-wrap .search-icon:after {
-    height: 7px;
-    width: 1px;
+    height: 5px;
+    width: 2px;
     background: #999999;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -72,22 +76,29 @@
     padding-left: 10px;
 }
 
+.search-wrap input,
+.search-wrap input:focus,
+.search-wrap input:active,
+.search-wrap input:hover {
+    border: none;
+}
+
 .search-wrap input {
     width: 80%;
     font-size: 1.4rem;
-    border: none;
     background: transparent;
+    padding: 2px 0;
 }
 
 .search-wrap .close-icon {
-    height: 20px;
-    width: 20px;
+    height: 18px;
+    width: 18px;
     display: inline-block;
     position: relative;
     border-radius: 50px;
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
-    background: #ccc;
+    background: #a7a4a4;
     top: 5px;
     right: -10px;
 }
@@ -96,14 +107,14 @@
 .search-wrap .close-icon:after {
     content: '';
     height: 2px;
-    width: 12px;
+    width: 10px;
     display: block;
     background: #fff;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     position: absolute;
-    top: 9px;
+    top: 8px;
     left: 4px;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -137,25 +148,25 @@
 }
 
 .consump-nav li .bg-img {
-    width: 2.6rem;
-    height: 2.8rem;
+    width: 3.33rem;
+    height: 3.33rem;
     margin: 0 auto;
-    background-color: #ccc;
+    background: url('../../../assets/images/menu-icon.png') center center no-repeat;
     background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url('../../images/j_yfk.png');
 }
 
-.consump-nav li:last-child .bg-img {
-    background-image: url('../../images/j_dzj.png');
+.consump-nav li:nth-of-type(1) .bg-img {
+    background-position: -10rem 0;
+}
+
+.consump-nav li:nth-of-type(2) .bg-img {
+    background-position: -13.5rem 0;
 }
 
 .consump-nav .nav-col .nav-name {
     text-align: center;
     font-size: 1.4rem;
     color: #333333;
-    margin-top: 0.5rem;
 }
 
 .consump-tab {
@@ -769,4 +780,40 @@
     -moz-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
+}
+
+
+/*********************全城、商户类型、推荐样式*******************************/
+
+.popup-body {
+    background: #FCFCFC;
+    width: 100%;
+}
+
+.popup-body .popub-head {
+    border-bottom: 1px solid #F2F2F2;
+    padding: 0.8rem 0.4rem;
+}
+
+.popup-body .popub-head span {
+    width: 50%;
+    display: block;
+    float: left;
+    color: #4083f5;
+    font-size: 1.4rem;
+}
+
+.popup-body .popub-head span.sure {
+    text-align: right;
+}
+
+.popub-content {
+    background-color: #FBFBFB;
+    position: relative;
+}
+.picker-slot-wrapper, .picker-item {
+          backface-visibility: hidden;
+        }
+.popup-body .picker-slot{
+    font-size: 1.4rem;
 }

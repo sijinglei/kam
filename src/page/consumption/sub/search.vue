@@ -11,7 +11,7 @@
                 <mt-button icon="back">返回</mt-button>
             </router-link>
         </mt-header>
-        <div class="pay consumption-page">
+        <div class="pay consumption-page seach-head">
             <div class="search-wrap seach">
                 <p>
                     <span class="search-icon"></span>
