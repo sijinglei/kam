@@ -31,7 +31,7 @@
 		<mt-header fixed
 		           title="首页"></mt-header>
 		<div class="page-swip">
-			<mt-swipe :auto="4000">
+			<mt-swipe :auto="4500">
 				<mt-swipe-item class="slide">
 					<router-link to="/about"
 					             style="background-image:url('/src/assets/images/2.jpg'); ">
@@ -76,7 +76,7 @@
 					</router-link>
 				</li>
 				<li>
-					<router-link to="/PrepaidCard">
+					<router-link to="/yfklist">
 						<div class="menu-info">
 							<div class="menu-icon"></div>
 							<p>预付卡</p>
@@ -84,7 +84,7 @@
 					</router-link>
 				</li>
 				<li>
-					<router-link to="/ElectronicCard">
+					<router-link to="/dzjlist">
 						<div class="menu-info">
 							<div class="menu-icon"></div>
 							<p>电子券</p>
@@ -158,18 +158,7 @@
 			</div>
 		</div>
 		<!--点击下载-->
-		<div class="download clearfix">
-			<div class="down-info fl">
-				<div class="img fl"></div>
-				<div class="info fl">
-					<p>卡盟平台
-						<br>普惠金融，精彩生活</p>
-				</div>
-			</div>
-			<div class="down-btn fr">
-				点击下载
-			</div>
-		</div>
+		<download></download>
 		<!--end-->
 	
 		<div class="footer">
@@ -198,6 +187,7 @@
 </template>
 
 <script>
+var download=require('../../components/download.vue');
 var MintUI = require('mint-ui');
 var MessageBox = MintUI.MessageBox;
 module.exports = {
@@ -206,7 +196,6 @@ module.exports = {
 			title: '首页'
 		}
 	},
-	components: {},
 	// 加载之前
 	created: function () {
 		document.title = this.title;
@@ -228,6 +217,9 @@ module.exports = {
 				});
 			}
 		}
+	},
+	components: {
+		download:download
 	}
 }
 </script>

@@ -811,9 +811,12 @@
     background-color: #FBFBFB;
     position: relative;
 }
-.picker-slot-wrapper, .picker-item {
-          backface-visibility: hidden;
-        }
-.popup-body .picker-slot{
+
+.picker-slot-wrapper,
+.picker-item {
+    backface-visibility: hidden;
+}
+
+.popup-body .picker-slot {
     font-size: 1.4rem;
 }

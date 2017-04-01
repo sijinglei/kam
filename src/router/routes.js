@@ -1,4 +1,5 @@
-export default [{
+export default [
+	{
 		name: 'index', //首页
 		path: '/',
 		component: require('../page/index/index.vue'),
@@ -69,7 +70,7 @@ export default [{
 		component: require('../page/consumption/sub/dzj-list.vue'),
 	},
 	{
-		name: 'dzjinfo', //电子券-更多
+		name: 'dzjinfo', //电子券-详情
 		path: '/dzjinfo/:id',
 		component: require('../page/consumption/sub/dzj-info.vue'),
 	},
@@ -87,10 +88,5 @@ export default [{
 		name: 'yfkinfo', //预付卡-详情
 		path: '/yfkinfo/:id',
 		component: require('../page/consumption/sub/yfk-info.vue'),
-	},
-	{
-		name: 'center', //我的
-		path: '/center',
-		component: require('../page/myinfo/index.vue'),
 	}
 ]

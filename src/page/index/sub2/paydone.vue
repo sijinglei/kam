@@ -25,7 +25,7 @@
 			<h2 class="money">-888.88元</h2>
 			<p class="tip">支付成功</p>
 		</div>
-		<div class="pay-done-bot">
+		<div class="col-field">
 			<ul>
 				<li>
 					<div class="pay-done-item clearfix">
