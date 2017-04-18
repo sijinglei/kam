@@ -1,33 +1,28 @@
 <style>
-    @import '../../../assets/css/view/consumption.css';
-    body .pay-page {
-        background: #F1F3F5;
-    }
+@import '../../../assets/css/view/consumption.css';
+body .pay-page {
+    background: #F1F3F5;
+}
 
-    .mint-header {
-        background-color: #1B1B20;
-    }
+.mint-header {
+    background-color: #1B1B20;
+}
 </style>
 <template>
     <section class="page pay-page">
-        <mt-header fixed title="电子券">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div class="pay search-list p_info">
+        <div class="search-list p_info">
             <div class="item Fix">
                 <div class="pic">
-                    <img src="../../../assets/images/1.png">
+                    <img :src="merchPath+result.imageid">
                 </div>
                 <div class="content">
                     <div class="name">
                         <div class="itemname">
-                            <span class="p_name">100元专家精心搭配套餐</span>
+                            <span class="p_name">{{result.ticketname}}</span>
                         </div>
                     </div>
-                    <p>有效期至：2017-05-01</p>
-                    <p>已售：5张</p>
+                     <p>有效期至：{{parseInt(result.validitytype)===1?result.validity:(result.validity+'天')}}</p>
+                    <p>已售：{{result.ticketnumber-result.salenumber}}张</p>
                 </div>
             </div>
         </div>
@@ -35,13 +30,21 @@
             <ul>
                 <li>
                     <div class="pay-done-item clearfix">
-                        <div class="item-title fl" style="line-height: 2.6rem;">转让数量</div>
+                        <div class="item-title fl"
+                             style="line-height: 2.6rem;">转让数量</div>
                         <div class="item-info fr">
-                            <div class="oper add fr" @click="calculate('add')" :class="{active:isaddActive}"></div>
+                            <div class="oper add fr"
+                                 @click="calculate('add')"
+                                 :class="{active:isaddActive}"></div>
                             <div class="oper number fr">
-                                <input type="number" name="price" value="1" v-model="number">
+                                <input type="number"
+                                       name="price"
+                                       value="1"
+                                       v-model="number">
                             </div>
-                            <div class="oper minus fr" @click="calculate('minus')" :class="{active:isminusActive}"></div>
+                            <div class="oper minus fr"
+                                 @click="calculate('minus')"
+                                 :class="{active:isminusActive}"></div>
                         </div>
                     </div>
                 </li>
@@ -53,76 +56,90 @@
                 </li>
             </ul>
         </div>
-        <div class="col-text">
-            <p>有效期<br> • 2017.2.21 至 2017.8.20（周末、法定节假日通用）<br> 使用时间
-                <br> • 10:00-15:00</p>
+        <div class="col-text" style="margin-bottom:5rem;">
+            <p v-html="result.ticketdescribe"></p>
         </div>
-        <div class="col-text">
-            <p>
-                使用规则<br> • 无需预约，消费高峰时可能需要等位<br> • 每张美团券建议4人使用<br> • 餐巾纸费：咨询商家<br> • 不可使用包间<br> • 堂食外带均可，可以打包，打包费详情咨询商家<br>                • 团购用户不可同时享受商家其他优惠<br>
-            </p>
-        </div>
-
         <footer class="fixd-btn">
-            <mt-button type="primary" size="large" @click.native="handleClick">立即抢购</mt-button>
+            <mt-button type="primary"
+                       size="large"
+                       @click.native="handleClick">立即抢购</mt-button>
         </footer>
     </section>
 </template>
 
 <script>
-    var MintUI = require('mint-ui');
-    var MessageBox = MintUI.MessageBox;
-    module.exports = {
-        data: function () {
-            return {
-                number: 1,
-                isaddActive: false,
-                isminusActive: false,
-                total: 0,
-                price: 100
-            }
-        },
-        components: {},
-        // 加载之前
-        created: function () {
-            document.title = this.title;
-        },
+export default {
+    data() {
+        return {
+            number: 1,
+            isaddActive: false,
+            isminusActive: false,
+            total: 0,
+            price: 100,
+            merchPath: config.merchPath, //商户图片前缀
+            formData: {
+                GID: usages.api.consumption.querymerticketinfo,
+                merchantid: '',
+                ticketbatchid: ''//电子券消费批量编号
+            },
+            result:{}
 
-        mounted: function () {
-            //隐藏加载动画
-            this.$el.querySelector('.mint-header-title').innerText = '电子券';
-        },
-        methods: {
-            winOpen: function (type) {
-                if (type === 2) {
-                    MessageBox('提示', '2');
-                    this.$router.go({
-                        name: 'consumptionuser'
-                    });
-                }
-            },
-            calculate: function (type) {
-                if (type === 'add') {
-                    this.number++;
-                    this.isaddActive = true;
-                    this.isminusActive = false;
+        }
+    },
+    components: {},
+    // 加载之前
+    created() {
+    },
+    mounted() {
+        //隐藏加载动画
+        var vm = this;
+        console.log(vm.$route.params);
+        vm.formData.ticketbatchid = vm.$route.params.id;
+        vm.formData.merchantid = vm.$route.params.merchantid;
+        vm.querymerticketinfo();
+    },
+    methods: {
+        querymerticketinfo() {
+            var vm = this;
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                console.log(res);
+                if (res.body.issuccess) {
+                    vm.result = res.body.result;
+                    vm.price=res.body.result.ticketprice;//电子券单价
                 } else {
-                    if (this.number > 1) {
-                        this.isminusActive = true;
-                        this.isaddActive = false;
-                        this.number--;
-                    }
+                    vm.errMsg(res.body.rtnmessage);
                 }
-                this.total = this.number * this.price;
-            },
-            handleClick: function () {
-                this.$router.push({
-                    name: 'dzjorder',
-                    params: {
-                        id: this.$route.params.id
-                    }
-                });
+            });
+        },
+        calculate(type) {
+            if (type === 'add') {
+                this.number++;
+                this.isaddActive = true;
+                this.isminusActive = false;
+            } else {
+                if (this.number > 1) {
+                    this.isminusActive = true;
+                    this.isaddActive = false;
+                    this.number--;
+                }
             }
+            this.total = this.number * this.price;
+        },
+        handleClick() {
+            var vm = this;
+            vm.$router.push({
+                name: 'dzjorder',
+                params: {
+                    id: vm.$route.params.id,
+                    price:vm.price,
+                    number:vm.number,
+                    merchantid:vm.formData.merchantid
+                }
+            });
+        },
+        errMsg(msg) {
+            MintUI.MessageBox('提示', msg);
         }
     }
+}
 </script>

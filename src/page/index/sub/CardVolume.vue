@@ -6,14 +6,7 @@ body .card-page {
 </style>
 <template>
     <section class="page card-page">
-        <mt-header fixed
-                   title="卡卷">
-            <router-link to="/"
-                         slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div class="pay card-top-wrap">
+        <div class="card-top-wrap">
     
             <mt-navbar v-model="selected">
                 <mt-tab-item id="yfk">预付卡</mt-tab-item>
@@ -24,7 +17,7 @@ body .card-page {
         <div class="tab-content">
             <mt-tab-container v-model="selected">
                 <mt-tab-container-item id="yfk">
-                    <router-link v-for="key in cardList"
+                    <router-link v-for="key in tickList"
                                  :to="{ name : 'cardDetail' , params : { id : key.cardid}}">
                         <div class="yfk-item clearfix">
                             <div class="img fl"></div>
@@ -34,7 +27,6 @@ body .card-page {
                     </router-link>
                 </mt-tab-container-item>
                 <mt-tab-container-item id="dzj">
-    
                     <div class="dzj-item">
                         <div class="nei">
                             <div class="topinfo clearfix">
@@ -61,51 +53,57 @@ body .card-page {
 </template>
 
 <script>
-module.exports = {
-    data: function () {
+export default {
+    data() {
         return {
-            title: '卡卷',
             selected: 'yfk',
             currentView: 'yfk',
-            cardList: []
+            tickList: [],
+            cardList: [],
+            formData: {
+                GID: '',
+                userid: _com.getSession('userid')
+            }
         }
     },
     components: {},
-    // 加载之前
-    created: function () {
-        document.title = this.title;
+    created() {
+        MintUI.Indicator.open();
     },
-
-    mounted: function () {
+    mounted() {
         //隐藏加载动画
-        this.cardList = [{
-            cardid: 1,
-            title: '中粮集团代金券a'
-        }, {
-            cardid: 2,
-            title: '中粮集团代金券2'
-        }, {
-            cardid: 2,
-            title: '中粮集团代金券3'
-        }, {
-            cardid: 2,
-            title: '中粮集团代金券4'
-        }, {
-            cardid: 2,
-            title: '中粮集团代金券5'
-        }];
+         var vm = this;
+         vm.queryticketbatchlist();
+        //  vm.querycardbatchlist();
     },
     methods: {
-        //扫一扫
-        openWxSys: function () {
-            MessageBox('提示', '扫一扫');
+        queryticketbatchlist() {//个人电子券列表
+            var vm = this;
+            vm.formData.GID = usages.api.user.queryticketbatchlist
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                console.log(res);
+                if (res.body.issuccess) {
+                    vm.tickList = res.body.result.ticketlist;
+                } else {
+                    vm.errMsg(res.body.rtnmessage);
+                }
+            });
+            MintUI.Indicator.close();
         },
-        handleClick: function () {
-            MessageBox('提示', '提交成功');
+        querycardbatchlist() {
+            var vm = this;
+            vm.formData.GID = usages.api.user.querycardbatchlist
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                console.log(res);
+                if (res.body.issuccess) {
+                    vm.cardlist = res.body.result.cardlist;
+                } else {
+                    vm.errMsg(res.body.rtnmessage);
+                }
+            });
         },
-        changeTab: function (type) {
-            MessageBox('提示', 'ss');
-            this.currentView = type;
+        errMsg(msg) {
+            MintUI.MessageBox('提示', msg);
         }
     }
 }

@@ -1,44 +1,45 @@
 <style>
-    @import '../../../assets/css/view/common.css';
-    body .pay-page {
-        background: #F1F3F5;
-    }
+body .pay-page {
+    background: #F1F3F5;
+}
 
-    .mint-header {
-        background-color: #1B1B20;
-    }
+.mint-header {
+    background-color: #1B1B20;
+}
 
-    .mint-popup {
-        background: #F1F3F5;
-    }
+.mint-popup {
+    background: #F1F3F5;
+}
 </style>
 <template>
     <section class="page pay-page">
-        <mt-header fixed title="订单确认">
-            <router-link to="/" slot="left">
+        <mt-header fixed
+                   title="订单确认">
+            <router-link to="/"
+                         slot="left">
                 <mt-button icon="back">返回</mt-button>
             </router-link>
         </mt-header>
-
+    
         <p class="pay order-head-title">100元专家精心搭配套餐</p>
         <div class="col-field">
             <ul>
                 <li>
                     <div class="pay-done-item clearfix">
                         <div class="item-title fl">单价</div>
-                        <div class="item-info fr">80元</div>
+                        <div class="item-info fr">{{number}}元</div>
                     </div>
                 </li>
                 <li>
                     <div class="pay-done-item clearfix">
                         <div class="item-title fl">数量</div>
-                        <div class="item-info fr">1张</div>
+                        <div class="item-info fr">{{price}}张</div>
                     </div>
                 </li>
                 <li>
                     <div class="pay-done-item clearfix">
                         <div class="item-title fl">总价</div>
-                        <div class="item-info fr">80元</div>
+                        <div class="item-info fr">{{number*price}}元</div>
                     </div>
                 </li>
             </ul>
@@ -48,7 +49,7 @@
                 <li>
                     <div class="pay-done-item clearfix">
                         <div class="item-title fl">支付金额</div>
-                        <div class="item-info fr">80元</div>
+                        <div class="item-info fr">{{number*price}}元</div>
                     </div>
                 </li>
                 <li>
@@ -65,157 +66,102 @@
                 </li>
             </ul>
         </div>
-        <div class="checkbox-field">
-            <p @click="isActive=!isActive"><span class="chebox" :class="{active:isActive}"></span>我已阅读并同意
-                <router-link to="">
-                    《卡盟平台卡券服务协议》
-                </router-link>
-            </p>
-        </div>
+        <comagree v-on:bindCheck="bindCheck"
+                  :link="linkobj"></comagree>
         <div class="order-btn">
-            <mt-button type="primary" size="large" @click.native="handleClick">支付订单</mt-button>
+            <mt-button type="primary"
+                       size="large"
+                       @click.native="handleClick">支付订单</mt-button>
         </div>
-        <mt-popup v-model="popupVisible" position="bottom" class="mint-popup-km">
-            <div class="km-input-pw">
-                <h2><span class="close" @click="popupVisible=false"></span> 请输入密码</h2>
-                <div class="pw">
-                    <div class="pay-pwd-box">
-                        <ul>
-                            <li v-for="key in ismark" :class="{zmarked:key}"><i></i></li>
-                        </ul>
-                        <input type="text" name="userPayPassword" maxlength="6" class="z-ignore" v-model="strs">
-                    </div>
-                </div>
-                <div class="forget-pw">
-                    <p>
-                        <router-link to="">
-                            忘记密码？
-                        </router-link>
-                    </p>
-                </div>
-                <div class="keylist clearfix">
-                    <ul>
-                        <li @click="keyImport('1')">
-                            <p>1</p>
-                            <p class="yy">&nbsp;</p>
-                        </li>
-                        <li @click="keyImport('2')">
-                            <p>2</p>
-                            <p class="yy">ABC</p>
-                        </li>
-                        <li @click="keyImport('3')">
-                            <p>3</p>
-                            <p class="yy">DEF</p>
-                        </li>
-                        <li @click="keyImport('4')">
-                            <p>4</p>
-                            <p class="yy">GHI</p>
-                        </li>
-                        <li @click="keyImport('5')">
-                            <p>5</p>
-                            <p class="yy">JKL</p>
-                        </li>
-                        <li @click="keyImport('6')">
-                            <p>6</p>
-                            <p class="yy">MNO</p>
-                        </li>
-                        <li @click="keyImport('7')">
-                            <p>7</p>
-                            <p class="yy">PQRS</p>
-                        </li>
-                        <li @click="keyImport('8')">
-                            <p>8</p>
-                            <p class="yy">TUV</p>
-                        </li>
-                        <li @click="keyImport('9')">
-                            <p>9</p>
-                            <p class="yy">WXYZ</p>
-                        </li>
-                        <li @click="keyImport('.')" style="background:#d1d5db; ">
-                            <p>.</p>
-                        </li>
-                        <li @click="keyImport('0')">
-                            <p>0</p>
-                        </li>
-                        <li @click="keyImport('clear')" style="background:#d1d5db; ">
-                            <p>
-                                <span class="clear"><i>&nbsp;</i></span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <mt-popup v-model="popupVisible"
+                  position="bottom"
+                  class="mint-popup-km">
+            <comPassWord v-on:bindPwdNext="setPwdNext"
+                         v-on:bindClose="close"
+                         :visible="popupVisible"></comPassWord>
         </mt-popup>
     </section>
 </template>
 
 <script>
-    var MintUI = require('mint-ui');
-    var MessageBox = MintUI.MessageBox;
-    module.exports = {
-        data: function () {
-            return {
-                isActive: false,
-                popupVisible: false,
-                strs: '',
-                ismark: [],
-                passwordStr: ''
-            }
-        },
-        components: {},
-        // 加载之前
-        created: function () {
-            document.title = this.title;
-        },
-
-        mounted: function () {
-            //隐藏加载动画
-            this.$el.querySelector('.mint-header-title').innerText = '订单确认';
-            for (var i = 0; i < 6; i++) {
-                this.ismark.push(false);
-            }
-        },
-        methods: {
-            keyImport: function (val) {
-                var vm = this;
-                if (val != '.') {
-
-                    if (val === 'clear' && vm.passwordStr != '') {
-                        var pwd = vm.passwordStr.substring(0, vm.passwordStr.length - 1);
-                        vm.passwordStr = pwd;
-                        if (pwd.length > -1) {
-                            // vm.ismark[pwd.length] = false;   //数组监听事件不能使用=要用下面的替换方式，否则无效
-                            vm.ismark.splice(pwd.length, 1, false);
-                        }
-                    } else {
-                        if (vm.passwordStr.length < 6 && val != 'clear') {
-                            vm.passwordStr += val;
-                            vm.ismark.splice(vm.passwordStr.length - 1, 1, true);
-                        }
-                    }
-                    if(vm.passwordStr.length===6){
-                         MessageBox('提示', '提交密码：'+vm.passwordStr);
-                    }
-                }
+import iptPassWord from '../../../components/inputpwd.vue';//密码子组件
+import agree from '../../../components/agreement.vue';//协议组件
+export default {
+    data() {
+        return {
+            linkobj: {
+                linkurl: '',
+                linktitle: '卡盟平台卡卷服务协议'
             },
-            handleClick: function () {
-                if (this.isActive) {
-                    this.popupVisible = true;
+            isActive: false,
+            popupVisible: false,
+            number: 0,
+            price: 0,
+            formData: {
+                GID: usages.api.consumption.ticketbuy,
+                userid: '',  //用户编号
+                merchantid: '',//商户编号
+                ticketbatchid: '',//电子券消费批量编号
+                buynumber: '',//电子券销售金额
+                buyamount: '',//电子券购买金额
+                password: ''//支付密码
+            }
+
+        }
+    },
+    components: {
+        comPassWord: iptPassWord,
+        comagree: agree
+    },
+    mounted() {
+        //隐藏加载动画
+        var vm = this;
+        console.log(vm.$route.params);
+        vm.number = vm.$route.params.number;
+        vm.price = vm.$route.params.price;
+        vm.formData.userid = _com.getSession('userid') || '';
+        vm.formData.merchantid = vm.$route.params.merchantid;
+        vm.formData.ticketbatchid = vm.$route.params.id;
+        vm.formData.buynumber = vm.$route.params.price;
+        vm.formData.buyamount = vm.number * vm.price;
+    },
+    methods: {
+        bindCheck(isAgree) {
+            this.isActive = isAgree;
+        },
+        setPwdNext(passwordStr) {
+            var vm = this;
+            vm.formData.password = passwordStr;
+            vm.save();
+        },
+        save() {//购买
+            var vm = this;
+
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                console.log(res);
+                if (res.body.issuccess) {
                 } else {
-                    MessageBox('提示', '请先同意');
+                    vm.errMsg(res.body.rtnmessage);
                 }
+            });
+
+        },
+        handleClick() {
+            var vm = this;
+            if (vm.isActive) {
+                vm.popupVisible = true;
+            } else {
+                MintUI.Toast('请先勾选' + vm.linkobj.linktitle);
             }
         },
-        watch: {
-            isActive: function () {
-
-            },
-            popupVisible: function () {
-                if (!this.popupVisible) {
-                    this.ismark = [false, false, false, false, false, false];
-                    this.passwordStr = '';
-                }
-            }
+        close() {
+            this.popupVisible = false;
+        },
+        errMsg(msg) {
+            MintUI.MessageBox('提示', msg).then(action => {
+                this.popupVisible = false;
+            });
         }
     }
+}
 </script>

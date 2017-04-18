@@ -82,7 +82,7 @@
 }
 
 .menu-list .menu-info p {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #333333;
     text-align: center;
     margin-top: 0.32rem;
@@ -120,7 +120,7 @@
 }
 
 .hot-shop p {
-    font-size: 15px;
+    font-size: 1.2rem;
     color: #000000;
     padding: 0 1.6rem;
     border-bottom: 1px solid #F1F3F5;
@@ -139,7 +139,7 @@
 .product-list {
     padding: 1.6rem;
     margin: 0 -0.8rem;
-    margin-bottom: 4rem;
+    margin-bottom: 10rem;
 }
 
 .product-list li {

@@ -10,85 +10,83 @@
 </style>
 <template>
     <section class="page pay-page">
-        <mt-header fixed title="预付卡">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-
-        <div class="pay consum-info-bot">
-            <div class="col-img-link">
+        <div class="consum-info-bot">
+            <div class="col-img-link" v-show="dzjList.length>0">
                 <ul>
-                    <li class="clearfix">
-                        <div class="left-con fl">
-                            <div class="j_img" style="background-image:url('/src/assets/images/j_yfk.png')"></div>
+                    <li class="clearfix" v-for="item in dzjList">
+                          <div class="left-con fl">
+                            <div class="j_img">
+                                <img :src="merchPath+item.imageid">
+                            </div>
                             <div class="j_info">
-                                <h3>中粮集团代金券</h3>
+                                <h3>{{item.cardshortname}}</h3>
                                 <div class="j_price">
-                                    <span class="now_price">￥80</span>
-                                    <span><del>￥100</del></span>
+                                    <span class="now_price">￥{{item.cardprice * item.radio}}</span>
+                                    <span><del>￥{{item.cardprice}}</del></span>
                                 </div>
                             </div>
                         </div>
                         <div class="right-con fr">
-                             <router-link :to="{name:'yfkinfo',params:{id:1}}" class="j_btn">
+                            <router-link :to="{name:'yfkinfo',params:{id:item.cardbatchid}}" class="j_btn">
                                 <span>开通</span>
                             </router-link>
                         </div>
-
-                    </li>
-                    <li class="clearfix">
-                        <div class="left-con fl">
-                            <div class="j_img" style="background-image:url('/src/assets/images/j_yfk.png')"></div>
-                            <div class="j_info">
-                                <h3>中粮集团代金券</h3>
-                                <div class="j_price">
-                                    <span class="now_price">￥80</span>
-                                    <span><del>￥100</del></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="right-con fr">
-                            <router-link :to="{name:'yfkinfo',params:{id:1}}" class="j_btn">
-                                <span>开通</span>
-                            </router-link>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-	<router-view></router-view>
-    </section>
+               </li>
+    </ul>
+</div>
+<div class="no-datalist" v-show="isHide">
+    <img src="Resources/h5/dist/images/no-data.png">
+</div>
+</div>
+<router-view></router-view>
+</section>
 </template>
 
 <script>
-    var MintUI = require('mint-ui');
-    var MessageBox = MintUI.MessageBox;
-    module.exports = {
-        data: function () {
-            return {
+   
+export default {
+    data() {
+        return {
+            merchPath: config.merchPath, //商户图片前缀
+            formData: {
+                GID: usages.api.consumption.querymerlist,
+                merchantid: '',
+                maxcount: 100//查询最大数目
+            },
+            dzjList: [],
+            isHide: false
+        }
+    },
+    components: {},
+    // 加载之前
+    created() {
+        MintUI.Indicator.open();
+    },
+    mounted() {
+        //隐藏加载动画
+        var vm = this;
+        vm.formData.merchantid = vm.$route.params.merchantid;
+        vm.querymerlist();
 
-            }
-        },
-        components: {},
-        // 加载之前
-        created: function () {
-            document.title = this.title;
-        },
-
-        mounted: function () {
-            //隐藏加载动画
-            this.$el.querySelector('.mint-header-title').innerText = '预付卡';
-        },
-        methods: {
-            winOpen: function (type) {
-                if (type === 2) {
-                    MessageBox('提示', '2');
-                    this.$router.go({
-                        name: 'consumptionuser'
-                    });
+    },
+    methods: {
+        querymerlist() {
+            var vm = this;
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                if (res.body.issuccess) {
+                    vm.dzjList = res.body.result.cardlist;
+                } else {
+                    vm.errMsg(res.body.rtnmessage);
                 }
-            }
+                if (vm.dzjList.length === 0) {
+                    vm.isHide = true;
+                }
+            });
+            MintUI.Indicator.close();
+        },
+        errMsg(msg) {
+            MintUI.MessageBox('提示', msg);
         }
     }
+}
 </script>

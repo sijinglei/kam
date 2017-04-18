@@ -10,28 +10,23 @@
 </style>
 <template>
     <section class="page pay-page">
-        <mt-header fixed title="详情">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div class="pay search-list p_info">
+        <div class="search-list p_info">
             <div class="item Fix">
                 <div class="pic">
-                    <img src="../../../assets/images/1.png">
+                    <img :src="merchPath+result.imageid">
                 </div>
                 <div class="content">
                     <div class="name">
                         <div class="itemname">
-                            <span class="p_name">掌上贷款</span>
+                            <span class="p_name" v-text="result.merchantshortname"></span>
                         </div>
                     </div>
-                    <div class="comment">
+                    <div class="comment" style="display:none">
                         <span class="star star-45">4.5</span>
                         <span class="pj">共98条评价</span>
                     </div>
                     <div class="type">
-                        <span class="p_type">金融/贷款</span>
+                        <span class="p_type">{{result.businessscopename}}</span>
                     </div>
                 </div>
             </div>
@@ -41,13 +36,13 @@
                 <li>
                     <div class="pay-done-item clearfix">
                         <div class="item-title fl">地址</div>
-                        <div class="item-info fr">浙江省杭州市下沙开发区四号大街</div>
+                        <div class="item-info fr">{{result.address}}</div>
                     </div>
                 </li>
                 <li>
                     <div class="pay-done-item clearfix">
                         <div class="item-title fl">电话</div>
-                        <div class="item-info fr blue">0571-88871370</div>
+                        <div class="item-info fr blue">{{result.linktel}}</div>
                     </div>
                 </li>
             </ul>
@@ -61,47 +56,30 @@
                     </div>
                 </div>
                 <div class="more fr">
-                    <router-link to="/dzjlist">
+                    <router-link :to="{name:'dzjlist',params:{merchantid:formData.merchantid}}">
                         查看全部&gt;
                     </router-link>
                 </div>
             </div>
             <div class="col-img-link">
                 <ul>
-                    <li class="clearfix">
-                        <router-link :to="{name:'dzjinfo',params:{id:1}}">
+                    <li class="clearfix" v-for="item in dzjList">
+                        <router-link :to="{name:'dzjinfo',params:{id:item.ticketbatchid,merchantid:formData.merchantid}}">
                             <div class="left-con fl">
-                                <div class="j_img"></div>
+                                <div class="j_img">
+                                    <img :src="merchPath+item.imageid">
+                                </div>
                                 <div class="j_info">
-                                    <h3>中粮集团代金券</h3>
+                                    <h3>{{item.ticketshortname}}</h3>
                                     <div class="j_price">
-                                        <span class="now_price">￥80</span>
-                                        <span><del>￥100</del></span>
+                                        <span class="now_price">￥{{item.ticketprice}}</span>
+                                        <span><del>￥{{item.ticketactprice}}</del></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="right-con fr">
                                 <span>
-                                已售5张
-                            </span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="clearfix">
-                        <router-link :to="{name:'dzjinfo',params:{id:1}}">
-                            <div class="left-con fl">
-                                <div class="j_img"></div>
-                                <div class="j_info">
-                                    <h3>中粮集团代金券</h3>
-                                    <div class="j_price">
-                                        <span class="now_price">￥80</span>
-                                        <span><del>￥100</del></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="right-con fr">
-                                <span>
-                                已售5张
+                                已售{{item.ticketnumber}}张
                             </span>
                             </div>
                         </router-link>
@@ -115,44 +93,28 @@
                     </div>
                 </div>
                 <div class="more fr">
-                    <router-link to="/yfklist">
+                    <router-link :to="{name:'yfklist',params:{merchantid:formData.merchantid}}">
                         查看全部&gt;
                     </router-link>
                 </div>
             </div>
             <div class="col-img-link">
                 <ul>
-                    <li class="clearfix">
-
+                    <li class="clearfix" v-for="item in yfkList">
                         <div class="left-con fl">
-                            <div class="j_img"></div>
+                            <div class="j_img">
+                                <img :src="merchPath+item.imageid">
+                            </div>
                             <div class="j_info">
-                                <h3>中粮集团代金券</h3>
+                                <h3>{{item.cardshortname}}</h3>
                                 <div class="j_price">
-                                    <span class="now_price">￥80</span>
-                                    <span><del>￥100</del></span>
+                                    <span class="now_price">￥{{item.cardprice * item.radio}}</span>
+                                    <span><del>￥{{item.cardprice}}</del></span>
                                 </div>
                             </div>
                         </div>
                         <div class="right-con fr">
-                            <router-link :to="{name:'yfkinfo',params:{id:1}}" class="j_btn">
-                                <span>开通</span>
-                            </router-link>
-                        </div>
-                    </li>
-                    <li class="clearfix">
-                        <div class="left-con fl">
-                            <div class="j_img"></div>
-                            <div class="j_info">
-                                <h3>中粮集团代金券</h3>
-                                <div class="j_price">
-                                    <span class="now_price">￥80</span>
-                                    <span><del>￥100</del></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="right-con fr">
-                            <router-link :to="{name:'yfkinfo',params:{id:1}}"  class="j_btn">
+                            <router-link :to="{name:'yfkinfo',params:{id:item.cardbatchid,merchantid:formData.merchantid}}" class="j_btn">
                                 <span>开通</span>
                             </router-link>
                         </div>
@@ -164,32 +126,58 @@
 </template>
 
 <script>
-    var MintUI = require('mint-ui');
-    var MessageBox = MintUI.MessageBox;
-    module.exports = {
-        data: function () {
+    export default {
+        data() {
             return {
-
+                merchPath: config.merchPath, //商户图片前缀
+                merchantid:'',
+                formData: {
+                    GID: usages.api.consumption.queryinfo,
+                    merchantid: ''
+                },
+                result: {},
+                dzjList: [],
+                yfkList: []
             }
         },
-        components: {},
-        // 加载之前
-        created: function () {
-            document.title = this.title;
-        },
-
-        mounted: function () {
-            //隐藏加载动画
-            this.$el.querySelector('.mint-header-title').innerText = '掌上贷款2';
+        mounted() {
+            var vm = this;
+            vm.formData.merchantid =vm.$route.params.id;
+            vm.queryinfo();
+            vm.queryDzjList();
+            vm.queryYfkList();
         },
         methods: {
-            winOpen: function (type) {
-                if (type === 2) {
-                    MessageBox('提示', '2');
-                    this.$router.go({
-                        name: 'consumptionuser'
-                    });
-                }
+            queryinfo() {
+                var vm = this;
+                vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                    
+                    if (res.body.issuccess) {
+                        vm.result = res.body.result;
+                    }
+                });
+            },
+            queryDzjList() {
+                var vm = this;
+                vm.formData.GID = usages.api.consumption.querymerticketlist;
+                vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                    console.log(res);
+                    if (res.body.issuccess) {
+                        console.log(res.body.result);
+                        vm.dzjList = res.body.result.ticketlist;
+                        console.log(vm.dzjList);
+                    }
+                });
+            },
+            queryYfkList() {
+                var vm = this;
+                vm.formData.GID = usages.api.consumption.querymerlist;
+                vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                    console.log(res);
+                    if (res.body.issuccess) {
+                        vm.yfkList = res.body.result.cardlist;
+                    }
+                });
             }
         }
     }

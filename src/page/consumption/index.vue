@@ -6,30 +6,27 @@
 </style>
 <template>
     <section class="page">
-        <mt-header fixed
-                   title="消费"></mt-header>
-        <div class="pay consumption-page seach-head">
+        <div class="consumption-page seach-head">
             <div class="search-wrap home">
                 <p @click="jumpPage"><span class="search-icon"></span>商户名或地点</p>
             </div>
         </div>
-        <div class="consump-nav clearfix">
+        <div class="consump-nav clearfix"
+             v-show="isshow">
             <ul>
                 <li>
-                    <router-link to="/yfklist">
-                        <div class="nav-col">
-                            <div class="bg-img"></div>
-                            <p class="nav-name">预付卡</p>
-                        </div>
-                    </router-link>
+                    <div class="nav-col"
+                         @click="changeList(1)">
+                        <div class="bg-img"></div>
+                        <p class="nav-name">预付卡</p>
+                    </div>
                 </li>
                 <li>
-                    <router-link to="/dzjlist">
-                        <div class="nav-col">
-                            <div class="bg-img"></div>
-                            <p class="nav-name">电子券</p>
-                        </div>
-                    </router-link>
+                    <div class="nav-col"
+                         @click="changeList(2)">
+                        <div class="bg-img"></div>
+                        <p class="nav-name">电子券</p>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -69,110 +66,74 @@
                 </div>
             </div>
         </mt-popup>
-        <div class="search-list">
+        <div class="search-list consum-mb10">
             <ul>
-                <li>
-                    <router-link :to="{name:'consumptioninfo',params:{id:1}}"
+                <li v-for="d in merchantList">
+                    <router-link :to="{name:'consumptioninfo',params:{id:d.merchantid}}"
                                  class="item Fix">
                         <div class="pic">
-                            <img src="../../assets/images/1.png">
+                            <img :src="merchPath+d.imageid">
                         </div>
                         <div class="content">
                             <div class="name">
                                 <div class="itemname">
-                                    <span class="p_name">掌上贷款</span>
-                                    <span class="p_type">金融/贷款</span>
+                                    <span class="p_name">{{d.merchantshortname}}</span>
+                                    <span class="p_type">{{d.businessscopename}}</span>
                                 </div>
                             </div>
-                            <div class="comment">
+                            <div class="comment"
+                                 v-show="false">
                                 <span class="star star-45">4.5</span>
                                 <span class="pj">共98条评价</span>
                             </div>
-                        </div>
-                    </router-link>
-                    <div class="new-coupon">
-                        <div class="p_j">
-                            <div class="img img-j"></div>
-                            <span>月供零负担，不用不要钱</span>
-                        </div>
-                        <div class="p_j">
-                            <div class="img img-k"></div>
-                            <span>额度最高50万，信用贷款，随借随还</span>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <router-link :to="{name:'consumptioninfo',params:{id:2}}"
-                                 class="item Fix">
-                        <div class="pic">
-                            <img src="../../assets/images/1.png">
-                        </div>
-                        <div class="content">
-                            <div class="name">
-                                <div class="itemname">
-                                    <span class="p_name">线上白领通（适合缴纳公积金</span>
-                                    <span class="p_type">金融/贷款</span>
+                            <div class="new-coupon"
+                                 v-if="d.saleremark1!=''||d.saleremark2!=''">
+                                <div class="p_j"
+                                     v-if="d.saleremark1!=''">
+                                    <div class="img img-j"></div>
+                                    <span>{{d.saleremark1}}</span>
+                                </div>
+                                <div class="p_j">
+                                    <div class="img img-k"></div>
+                                    <span>{{d.saleremark2}}</span>
                                 </div>
                             </div>
-                            <div class="comment">
-                                <span class="star star-35">4.5</span>
-                                <span class="pj">共98条评价</span>
-                            </div>
                         </div>
                     </router-link>
-                    <div class="new-coupon hide">
-                        <div class="p_j">
-                            <div class="img img-j"></div>
-                            <span>月供零负担，不用不要钱</span>
-                        </div>
-                        <div class="p_j">
-                            <div class="img img-k"></div>
-                            <span>额度最高50万，信用贷款，随借随还</span>
-                        </div>
-                    </div>
                 </li>
             </ul>
+            <div class="no-datalist"
+                 v-if="merchantList.length==0">
+                <img src="Resources/h5/dist/images/no-data.png"
+                     style="margin-top:5rem;">
+            </div>
         </div>
         <!--点击下载-->
         <download></download>
         <!--end-->
-    
-        <div class="footer">
-            <div class="mint-tabbar is-fixed">
-                <router-link to="/"
-                             class="mint-tab-item active">
-                    <div class="mint-tab-item-icon"><img src=""></div>
-                    <div class="mint-tab-item-label"> 首页
-                    </div>
-                </router-link>
-                <router-link to="/consumption"
-                             class="mint-tab-item">
-                    <div class="mint-tab-item-icon"><img src=""></div>
-                    <div class="mint-tab-item-label"> 消费
-                    </div>
-                </router-link>
-                <router-link to="/center"
-                             class="mint-tab-item">
-                    <div class="mint-tab-item-icon"><img src=""></div>
-                    <div class="mint-tab-item-label"> 我的
-                    </div>
-                </router-link>
-            </div>
-        </div>
+        <!--底部导航-->
+        <foot :active="2"></foot>
+        <!--end-->
     </section>
 </template>
 
 <script>
+import download from '../../components/download.vue';
+import footer from '../../components/footer.vue';
+import areaList from '../../kit/areajson';
+import ticketcardtypeList from '../../kit/ticketcardtype';
+var locationAdress = '杭州市';
 
-var download=require('../../components/download.vue');
-module.exports = {
-    data: function () {
+export default {
+    data() {
         return {
+            merchPath: config.merchPath, //商户图片前缀
+            isshow: true,
             popupVisible: false,
             buttonBottom: 0,
             dateSlots: [{
                 flex: 1,
-                values: ['深圳市', '深圳市2', '深圳市3', '深圳市4', '深圳市5', '深圳市6'],
+                values: [],
                 className: 'slot1',
                 textAlign: 'center'
             }],
@@ -180,61 +141,149 @@ module.exports = {
             text1: '全城',
             text2: '商户类型',
             text3: '推荐',
-            type: 1
+            type: 1,
+            formData: {
+                GID: usages.api.consumption.querymerchantlist, //接口
+                city: '', //地址模糊查询
+                businessscope: '', //经营类型
+                address: '', //地址模糊查询
+                merchantname: '', //商户名称模糊查询
+                ticketcardtype: '',
+                pagesize: 100,
+                pageno: 1
+            },
+            merchantList: [],
+            areaListName: ['全城'],
+            areaListCode: [''],
+            ticketCardTypeNameList: ['全部'],
+            ticketCardTypeCodeList: ['']
         }
     },
-    // 加载之前
-    created: function () {
-        document.title = this.title;
+    created() {
+        //初始化加载数据
+        this.getAreaByName(areaList);
+        this.getTicketCardName(ticketcardtypeList);
+        MintUI.Indicator.open();
     },
-
-    mounted: function () {
-        //隐藏加载动画
-        console.log(this.$refs);
-        this.buttonBottom = this.$refs.navmenu.offsetTop;
+    mounted() {
+        var vm = this;
+        vm.isshow = true;
+        vm.formData.ticketcardtype = config.yfkId;
+        vm.querymerchantlist();
     },
     methods: {
+        getTicketCardName(dataList) {
+            var vm = this;
+            if (dataList) {
+                dataList.forEach(function (ele) {
+                    vm.ticketCardTypeNameList.push(ele.name);
+                    vm.ticketCardTypeCodeList.push(ele.value);
+                })
+            }
+        },
+        getAreaByName(dataList) {
+            var vm = this;
+            if (dataList) {
+                dataList.forEach(function (ele) {
+                    var subObj = ele.sub,
+                        len = subObj ? subObj.length : 0;
+                    if (ele.name === locationAdress) {
+                        for (var i = 0; i < len; i++) {
+                            if (subObj[i].name != locationAdress) {
+                                vm.areaListName.push(subObj[i].name);
+                                vm.areaListCode.push(subObj[i].value);
+                            }
+                        }
+                    } else {
+                        vm.getAreaByName(subObj);
+                    }
+                });
+            }
+        },
+        changeList(type) {
+            var vm = this;
+            vm.isshow = false;
+            vm.formData.city = '';
+            vm.formData.businessscope = '';
+            if (type === 1) {
+                vm.formData.ticketcardtype = config.yfkId;
+            } else {
+                vm.formData.ticketcardtype = config.dzjId;
+            }
+            vm.querymerchantlist();
+        },
+        querymerchantlist() {
+            var vm = this;
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                console.log(res.body);
+                var datalist = res.body
+                if (datalist.issuccess) {
+                    vm.merchantList = datalist.result.merchantlist || [];
+                } else {
+                    vm.errMsg(datalist.rtnmessage);
+                }
+            }).then((res) => {
+                MintUI.Indicator.close();
+            });
+        },
         jumpPage: function () { //跳转到搜索页面
             this.$router.push({
                 'name': 'search'
             });
         },
         openSection: function (val) {
-            this.popupVisible = true;
-            this.type = val;
-            this.dateSlots[0].values = [];
+            var vm = this;
+            vm.popupVisible = true;
+            vm.type = val;
+            vm.dateSlots[0].values = [];
             if (val == 1) {
-                this.dateSlots[0].values = ['全部', '深圳市2', '深圳市3', '深圳市4', '深圳市5', '深圳市6'];
-                console.log(this.dateSlots[0].values);
+                vm.dateSlots[0].values = vm.areaListName;
             } else if (val == 2) {
-                this.dateSlots[0].values = ['全部', '类型2',
-                    '类型3', '类型4', '类型5', '类型6'
-                ];
-                console.log(this.dateSlots[0].values);
+                this.dateSlots[0].values = vm.ticketCardTypeNameList;
             } else {
-                this.dateSlots[0].values = ['全部', '推荐2',
-                    '推荐3', '推荐4', '推荐5', '推荐6'
-                ];
+                vm.dateSlots[0].values = ['默认'];
             }
         },
         sure: function () {
-            this.popupVisible = false;
-            if (this.type == 1) {
-                this.text1 = this.selectValue == '全部' ? '全城' : this.selectValue;
-            } else if (this.type == 2) {
-                this.text2 = this.selectValue == '全部' ? '商户类型' : this.selectValue;
+            var vm = this;
+            vm.popupVisible = false;
+            if (vm.type == 1) {
+                vm.text1 = vm.selectValue == '全城' ? '全城' : vm.selectValue;
+            } else if (vm.type == 2) {
+                vm.text2 = vm.selectValue == '全部' ? '商户类型' : vm.selectValue;
             } else {
-                this.text3 = this.selectValue == '全部' ? '推荐' : this.selectValue;
+                vm.text3 = vm.selectValue == '默认' ? '推荐' : vm.selectValue;
             }
+            vm.querymerchantlist(); //查询商户列表
         },
         onDateChange(picker, values) {
-            console.log(picker);
-            console.log(values);
-            this.selectValue = values[0];
+            var vm = this;
+
+            var selectVal = values[0] || (vm.type == 1 ? '全城' : '全部');
+            vm.selectValue = selectVal;
+            var selectCode = selectVal == '全城' || selectVal == '全部' ? '' :
+                (vm.type == 1 ? vm.areaListCode[vm.areaListName.indexOf(
+                    selectVal)] : vm.ticketCardTypeCodeList[vm.ticketCardTypeNameList.indexOf(
+                        selectVal)]);
+            if (vm.type == 1) {
+                vm.formData.city = selectCode;
+            } else if (vm.type == 2) {
+                console.log(selectCode);
+                vm.formData.businessscope = selectCode;
+            } else { //推荐
+            }
+            console.log('城市code：' + selectCode);
+        },
+        errMsg(msg) {
+            MintUI.MessageBox('', msg);
         }
     },
     components: {
-        download: download
+        download: download,
+        foot: footer
+    },
+    watch: {
+
     }
 }
 </script>

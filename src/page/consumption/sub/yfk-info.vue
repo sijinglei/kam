@@ -3,53 +3,32 @@
 body .pay-page {
     background: #F1F3F5;
 }
-
-.mint-header {
-    background-color: #1B1B20;
-}
 </style>
 <template>
     <section class="page pay-page">
-        <mt-header fixed
-                   title="预付卡">
-            <router-link to="/"
-                         slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div class="pay search-list p_info">
+        <div class="search-list p_info">
             <div class="item Fix">
                 <div class="pic">
-                    <img src="../../../assets/images/1.png">
+                    <img :src="merchPath+result.imageid">
                 </div>
                 <div class="content">
                     <div class="name">
                         <div class="itemname">
-                            <span class="p_name">100元专家精心搭配套餐</span>
+                            <span class="p_name">{{result.cardname}}</span>
                         </div>
                     </div>
-                    <p>有效期至：2017-05-01</p>
-                    <p>已售：5张</p>
+                    <p>有效期至：{{parseInt(result.validitytype)===1?result.validity:result.validity+'天'}}</p>
+                    <p>已售：{{result.cardnumber-result.salenumber}}张</p>
                 </div>
             </div>
         </div>
         <div class="col-text">
             <p>门店地址 <br>
-            • 浙江省杭州市下沙开发区四号大街  <br>
-            • 10:00-15:00
+            • {{result.address}}
             </p>
         </div>
         <div class="col-text">
-            <p>
-                使用规则
-                <br> • 无需预约，消费高峰时可能需要等位
-                <br> • 每张美团券建议4人使用
-                <br> • 餐巾纸费：咨询商家
-                <br> • 不可使用包间
-                <br> • 堂食外带均可，可以打包，打包费详情咨询商家
-                <br> • 团购用户不可同时享受商家其他优惠
-                <br>
-            </p>
+            <p v-html="result.carddescribe"> </p>
         </div>
     
         <footer class="fixd-btn">
@@ -61,50 +40,45 @@ body .pay-page {
 </template>
 
 <script>
-var MintUI = require('mint-ui');
-var MessageBox = MintUI.MessageBox;
-module.exports = {
-    data: function () {
+
+export default {
+    data() {
         return {
-            number: 1,
-            isaddActive: false,
-            isminusActive: false,
-            total: 0,
-            price: 100
+            merchPath: config.merchPath, //商户图片前缀
+            formData: {
+                GID: usages.api.consumption.querycardinfo,
+                merchantid: '',
+                cardbatchid: ''//预付卡id
+            },
+           result:{}
         }
     },
     components: {},
     // 加载之前
-    created: function () {
-        document.title = this.title;
+    created() {
+        // MintUI.Indicator.open();
     },
-
-    mounted: function () {
+    mounted() {
         //隐藏加载动画
-        this.$el.querySelector('.mint-header-title').innerText = '电子券';
+        var vm = this;
+        vm.formData.merchantid = vm.$route.params.merchantid;
+        vm.formData.cardbatchid = vm.$route.params.id;
+        vm.querycardinfo();
+
     },
     methods: {
-        winOpen: function (type) {
-            if (type === 2) {
-                MessageBox('提示', '2');
-                this.$router.go({
-                    name: 'consumptionuser'
-                });
-            }
-        },
-        calculate: function (type) {
-            if (type === 'add') {
-                this.number++;
-                this.isaddActive = true;
-                this.isminusActive = false;
-            } else {
-                if (this.number > 1) {
-                    this.isminusActive = true;
-                    this.isaddActive = false;
-                    this.number--;
+        querycardinfo() {
+            var vm = this;
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                if (res.body.issuccess) {
+                    vm.result = res.body.result;
+                } else {
+                    vm.errMsg(res.body.rtnmessage);
                 }
-            }
-            this.total = this.number * this.price;
+            });
+        },
+        errMsg(msg) {
+            MintUI.MessageBox('提示', msg);
         }
     }
 }

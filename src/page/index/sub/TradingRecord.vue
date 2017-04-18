@@ -3,14 +3,8 @@
 </style>
 <template>
     <section class="page">
-        <mt-header fixed
-                   title="交易记录">
-            <router-link to="/"
-                         slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div class="pay trad-wrap">
+        <div class="trad-wrap"
+             v-show="!isHide">
             <dl class="trad-list">
                 <dt>本月</dt>
     
@@ -29,6 +23,7 @@
                     </router-link>
                 </dd>
             </dl>
+    
             <dl class="trad-list">
                 <dt>2月</dt>
                 <dd v-for="d in dataList2">
@@ -47,6 +42,10 @@
                 </dd>
             </dl>
         </div>
+        <div class="no-datalist"
+             v-show="isHide">
+            <img src="Resources/h5/dist/images/no-data.png">
+        </div>
     </section>
 </template>
 
@@ -56,20 +55,21 @@ var MessageBox = MintUI.MessageBox;
 module.exports = {
     data: function () {
         return {
-            title: '付款',
             dataList: [],
-            dataList2: []
+            dataList2: [],
+            transtype: 10,//首页交易记录类型
+            isHide: false
         }
     },
     components: {},
     // 加载之前
     created: function () {
-        document.title = this.title;
     },
 
     mounted: function () {
+        var vm = this;
         //隐藏加载动画
-        this.dataList = [{
+        vm.dataList = [{
             id: 1,
             title: '银行卡充值',
             money: 200.88,
@@ -88,7 +88,7 @@ module.exports = {
             datetime: '2017-03-22 16:22',
             stateText: '进行中'
         }];
-        this.dataList2 = [{
+        vm.dataList2 = [{
             id: 1,
             title: '充值',
             money: 188.88,
@@ -124,11 +124,26 @@ module.exports = {
             stateText: '银行处理中'
         }
         ];
+        if (vm.dataList.length > 0 || vm.dataList2.length  > 0) {
+            vm.isHide = false;
+        }
+        vm.gettranslist();
     },
     methods: {
         //扫一扫
-        openWxSys: function () {
-            MessageBox('提示', '扫一扫');
+        gettranslist() {
+            var vm = this;
+            var _p = {
+                GID: usages.api.user.translist,
+                transtype: 10,
+                userid: _com.getSession('userid'),
+                pagesize: 100,
+                pageno: 1
+            }
+            vm.$http.post(usages.domain, _p).then(function (res) {
+                console.log(res);
+
+            })
         },
         handleClick: function () {
             MessageBox('提示', '提交成功');

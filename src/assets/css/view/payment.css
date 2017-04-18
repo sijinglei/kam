@@ -127,7 +127,7 @@
 .trad-wrap dl dt {
     height: 2.8rem;
     background: #F1F3F5;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #999999;
     letter-spacing: -0.34px;
     padding: 0.4rem 1.2rem;
@@ -152,7 +152,7 @@
 }
 
 .trad-wrap .trads .trad-item-top>div {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #333333;
     letter-spacing: -0.39px;
 }
@@ -190,7 +190,7 @@
     }
 
     .card-page .footer p a {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         color: #999999;
         letter-spacing: -0.34px;
     }
@@ -248,11 +248,10 @@
         width: 3.8rem;
         height: 3.8rem;
         border-radius: 50%;
-        background: red;
     }
 
     .tab-content .yfk-item .card-name {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         color: #333333;
         letter-spacing: -0.39px;
         line-height: 3.8rem;

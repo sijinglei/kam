@@ -1,8 +1,22 @@
 <style>
-@import './assets/css/view/common.css';
+/* 	@import "./assets/css/global.css"; */
 </style>
 <template>
-  <div class="view">
-      <router-view></router-view>
+  <div id="app">
+  	<router-view></router-view>
   </div>
 </template>
+
+<script>
+
+export default {
+  data () {
+    return {
+
+    }
+  },
+  mounted(){
+
+  }
+}
+</script>

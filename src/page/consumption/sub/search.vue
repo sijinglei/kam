@@ -1,101 +1,115 @@
 <style>
-    @import '../../../assets/css/view/consumption.css';
-    .mint-header {
-        background-color: #1B1B20;
-    }
+@import '../../../assets/css/view/consumption.css';
+.mint-header {
+    background-color: #1B1B20;
+}
 </style>
 <template>
     <section class="page">
-        <mt-header fixed title="搜索页面">
-            <router-link to="/" slot="left">
-                <mt-button icon="back">返回</mt-button>
-            </router-link>
-        </mt-header>
-        <div class="pay consumption-page seach-head">
+        <div class="consumption-page seach-head">
             <div class="search-wrap seach">
                 <p>
                     <span class="search-icon"></span>
-                    <input type="text" name="" value="" placeholder="商户名或地点">
-                    <span class="close-icon" @click="$router.go(-1)"></span>
+                    <input type="text"
+                           v-model="keyword"
+                           value=""
+                           placeholder="商户名或地点">
+                    <span class="close-icon"
+                          @click="$router.go(-1)"></span>
                 </p>
             </div>
         </div>
-
+    
         <div class="consum-info-bot">
-            <div class="col-img-link hide">
+            <div class="search-list"
+                 v-if="merchantList.length>0">
                 <ul>
-                    <li class="clearfix">
-                        <router-link :to="{name:'dzjinfo',params:{id:2}}">
-                            <div class="left-con fl">
-                                <div class="j_img" style="background-image:url('/src/assets/images/j_dzj.png')"></div>
-                                <div class="j_info">
-                                    <h3>中粮集团代金券</h3>
-                                    <div class="j_price">
-                                        <span class="now_price">￥80</span>
-                                        <span><del>￥100</del></span>
+                    <li v-for="d in merchantList">
+                        <router-link :to="{name:'consumptioninfo',params:{id:d.merchantid}}"
+                                     class="item Fix">
+                            <div class="pic">
+                                <img :src="merchPath+d.imageid">
+                            </div>
+                            <div class="content">
+                                <div class="name">
+                                    <div class="itemname">
+                                        <span class="p_name">{{d.merchantshortname}}</span>
+                                        <span class="p_type">{{d.businessscopename}}</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="right-con fr">
-                                <span>
-                                    已售5张
-                                </span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="clearfix">
-                        <router-link :to="{name:'dzjinfo',params:{id:2}}">
-                            <div class="left-con fl">
-                                <div class="j_img" style="background-image:url('/src/assets/images/j_dzj.png')"></div>
-                                <div class="j_info">
-                                    <h3>中粮集团代金券</h3>
-                                    <div class="j_price">
-                                        <span class="now_price">￥80</span>
-                                        <span><del>￥100</del></span>
+                                <div class="comment"
+                                     v-show="false">
+                                    <span class="star star-45">4.5</span>
+                                    <span class="pj">共98条评价</span>
+                                </div>
+                                <div class="new-coupon"
+                                     v-if="d.saleremark1!=''||d.saleremark2!=''">
+                                    <div class="p_j"
+                                         v-if="d.saleremark1!=''">
+                                        <div class="img img-j"></div>
+                                        <span>{{d.saleremark1}}</span>
+                                    </div>
+                                    <div class="p_j">
+                                        <div class="img img-k"></div>
+                                        <span>{{d.saleremark2}}</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="right-con fr">
-                                <span>
-                                    已售5张
-                                </span>
                             </div>
                         </router-link>
                     </li>
                 </ul>
+            </div>
+    
+            <div class="no-datalist"
+                 v-if="merchantList.length==0">
+                <img src="Resources/h5/dist/images/no-data.png"
+                     style="margin-top:5rem;">
             </div>
         </div>
     </section>
 </template>
 
 <script>
-    var MintUI = require('mint-ui');
-    var MessageBox = MintUI.MessageBox;
-    module.exports = {
-        data: function () {
-            return {
-
-            }
-        },
-        components: {},
-        // 加载之前
-        created: function () {
-            document.title = this.title;
-        },
-
-        mounted: function () {
-            //隐藏加载动画
-            this.$el.querySelector('.mint-header-title').innerText = '电子券';
-        },
-        methods: {
-            winOpen: function (type) {
-                if (type === 2) {
-                    MessageBox('提示', '2');
-                    this.$router.go({
-                        name: 'consumptionuser'
-                    });
-                }
+export default {
+    data() {
+        return {
+            merchPath: config.merchPath, //商户图片前缀
+            merchantList: [],
+            keyword: '',
+            formData: {
+                GID: usages.api.consumption.querymerchantlist, //接口
+                city: '', //地址模糊查询
+                businessscope: '', //经营类型
+                address: '', //地址模糊查询
+                merchantname: '', //商户名称模糊查询
+                ticketcardtype: '',
+                pagesize: 100,
+                pageno: 1
             }
         }
+    },
+    components: {},
+
+    mounted() {
+        this.querymerchantlist();
+    },
+    methods: {
+        querymerchantlist() {
+            var vm = this;
+            vm.formData.merchantname = vm.keyword;
+            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                console.log(res.body);
+                var datalist = res.body
+                if (datalist.issuccess) {
+                    vm.merchantList = datalist.result.merchantlist || [];
+                }
+            });
+        }
+    },
+    watch: {
+        keyword() {
+            this.querymerchantlist();
+        }
     }
+}
 </script>
