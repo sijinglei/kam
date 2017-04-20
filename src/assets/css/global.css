@@ -1,15 +1,40 @@
-@charset"utf-8"; *,:after,:before {
+@charset"utf-8";
+*,
+:after,
+:before {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box
 }
 
-body,button,html,input,select,textarea {
+body,
+button,
+html,
+input,
+select,
+textarea {
     font-size: 18px;
-    font-family: PingFang-Medium,PingFangSC-Regular,Heiti,Heiti SC,DroidSans,DroidSansFallback,"Microsoft YaHei",sans-serif;
+    font-family: PingFang-Medium, PingFangSC-Regular, Heiti, Heiti SC, DroidSans, DroidSansFallback, "Microsoft YaHei", sans-serif;
     -webkit-font-smoothing: antialiased
 }
 
-body,dd,div,dl,dt,fieldset,form,h2,h3,h4,h5,h6,img,li,ol,p,td,ul {
+body,
+dd,
+div,
+dl,
+dt,
+fieldset,
+form,
+h2,
+h3,
+h4,
+h5,
+h6,
+img,
+li,
+ol,
+p,
+td,
+ul {
     margin: 0;
     padding: 0;
     border: 0;
@@ -17,13 +42,16 @@ body,dd,div,dl,dt,fieldset,form,h2,h3,h4,h5,h6,img,li,ol,p,td,ul {
     font-weight: 400
 }
 
-.page,body {
+.page,
+body {
     background: #F6F6F9
 }
-img{
+
+img {
     vertical-align: middle;
     width: 100%;
 }
+
 body {
     margin: 0 auto;
     font-size: 18px;
@@ -35,7 +63,10 @@ body {
     outline: 0
 }
 
-a,a:active,a:hover,a:link {
+a,
+a:active,
+a:hover,
+a:link {
     text-decoration: none;
     color: #333;
 }
@@ -44,7 +75,8 @@ a {
     background-color: transparent;
 }
 
-a:active,a:hover {
+a:active,
+a:hover {
     outline: 0;
 }
 
@@ -52,7 +84,9 @@ input[type="checkbox"] {
     vertical-align: middle;
 }
 
-input[type="tel"], input[type="text"] {
+input[type="tel"],
+input[type="text"],
+input[type="number"] {
     -webkit-appearance: none;
     border-radius: 0;
     background: transparent;
@@ -63,76 +97,76 @@ input[type="tel"], input[type="text"] {
 @media only screen and (max-width: 310px) and (min-width:300px) {
     input,
     html {
-        font-size:12px
+        font-size: 12px
     }
 }
 
 @media only screen and (max-width: 320px) and (min-width:310px) {
     input,
     html {
-        font-size:12px
+        font-size: 12px
     }
 }
 
 @media only screen and (max-width: 360px) and (min-width:320px) {
     input,
     html {
-        font-size:12px
+        font-size: 12px
     }
 }
 
 @media only screen and (max-width: 360px) and (min-width:350px) {
     input,
     html {
-        font-size:14px
+        font-size: 14px
     }
 }
 
 @media only screen and (max-width: 480px) and (min-width:360px) {
     input,
     html {
-        font-size:14px
+        font-size: 14px
     }
 }
 
 @media only screen and (max-width: 480px) and (min-width:470px) {
     input,
     html {
-        font-size:14px
+        font-size: 14px
     }
 }
 
 @media only screen and (max-width: 560px) and (min-width:480px) {
     input,
     html {
-        font-size:13.33px
+        font-size: 13.33px
     }
 }
 
 @media only screen and (max-width: 570px) and (min-width:560px) {
     input,
     html {
-        font-size:15.83px
+        font-size: 15.83px
     }
 }
 
 @media only screen and (max-width: 640px) and (min-width:570px) {
     input,
     html {
-        font-size:15.83px
+        font-size: 15.83px
     }
 }
 
 @media only screen and (max-width: 640px) and (min-width:630px) {
     html {
-        font-size:17.78px
+        font-size: 17.78px
     }
 }
 
 @media only screen and (max-width: 710px) and (min-width:640px) {
     input,
     html {
-        font-size:17.78px
+        font-size: 17.78px
     }
 }
 
@@ -147,14 +181,16 @@ html {
     user-select: none
 }
 
-body,html {
+body,
+html {
     overflow-x: hidden;
     max-width: 100%;
     min-width: 320px;
     min-height: 100vh;
 }
 
-.clearfix:after, .clearfix:before {
+.clearfix:after,
+.clearfix:before {
     content: ' ';
     display: table;
     clear: both;
@@ -166,8 +202,8 @@ body,html {
     right: 0;
     top: 0;
     min-height: 100%;
-    transition: transform .425s cubic-bezier(.4,.6,.2,1);
-    -webkit-transition: transform .425s cubic-bezier(.4,.6,.2,1);
+    transition: transform .425s cubic-bezier(.4, .6, .2, 1);
+    -webkit-transition: transform .425s cubic-bezier(.4, .6, .2, 1);
     font-size: 1.2rem;
     max-width: 640px;
     min-width: 320px;
@@ -180,7 +216,7 @@ body,html {
     display: -webkit-box;
 }
 
-.box > * {
+.box>* {
     box-flex: 1;
     -webkit-box-flex: 1;
     display: block;
@@ -195,6 +231,7 @@ body,html {
 .page .marg-top15 {
     margin-top: 1.5rem;
 }
+
 .page .marg-top8 {
     margin-top: 0.8rem;
 }
@@ -203,7 +240,9 @@ body,html {
     margin: 0 0 1rem 0;
 }
 
+
 /********* icon **********/
+
 .arrows-right {
     position: relative;
 }
@@ -223,7 +262,8 @@ body,html {
     right: 0;
 }
 
-.icon-add:before, .icon-add:after {
+.icon-add:before,
+.icon-add:after {
     content: '';
     height: .2rem;
     width: 1.5rem;
@@ -245,9 +285,10 @@ body,html {
     background: #D4DFE6;
 }
 
-.page .btn.on, .page .tap-tran {
+.page .btn.on,
+.page .tap-tran {
     tap-highlight-color: transparent;
-    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
 
 .page .btn {
@@ -296,9 +337,11 @@ body,html {
 .page .font-def {
     color: #333;
 }
-.page .font-gray{
+
+.page .font-gray {
     color: #999
 }
+
 .page .text-center {
     text-align: center;
 }
@@ -306,18 +349,22 @@ body,html {
 .page .bg-white {
     background: white;
 }
-.page .code-img{    
+
+.page .code-img {
     height: 1rem;
     width: 15rem;
     margin-top: -.4rem;
     margin-right: 1rem;
 }
-.abs-bottom{
+
+.abs-bottom {
     position: absolute;
     bottom: 3rem;
     left: 0;
     right: 0;
 }
+
+
 /***************输入密码样式**************/
 
 .km-input-pw {

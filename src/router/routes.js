@@ -46,21 +46,38 @@ export default [{
 					title: '我的资料'
 				},
 				children: [{
-					name: 'usualaddress', //我的 > 我的资料
-					path: '/usualaddress',
-					component: require('../page/profile/me/usual-address.vue'),
-					meta: {
-						title: '常用地址'
-					},
-					children: [{
-						name: 'usualaddressadd', //我的 > 我的资料
-						path: '/usualaddressadd/:id',
-						component: require('../page/profile/me/add-address.vue'),
+						name: 'usualaddress', //我的 > 我的资料
+						path: '/usualaddress',
+						component: require('../page/profile/me/usual-address.vue'),
 						meta: {
-							title: '新增地址'
+							title: '常用地址'
+						},
+						children: [{
+							name: 'usualaddressadd', //我的 > 我的资料
+							path: '/usualaddressadd/:id',
+							component: require('../page/profile/me/add-address.vue'),
+							meta: {
+								title: '新增地址'
+							}
+						}]
+					},
+					{
+						name: 'linkmanadd', //我的 > 我的资料
+						path: '/linkmanadd',
+						component: require('../page/profile/me/linkman-add.vue'),
+						meta: {
+							title: '常用地址'
 						}
-					}]
-				}]
+					},
+					{
+						name: 'realnameinfo', //我的 > 真实姓名
+						path: '/realnameinfo',
+						component: require('../page/profile/me/realnameinfo.vue'),
+						meta: {
+							title: '真实姓名'
+						}
+					}
+				]
 			},
 			{
 				name: 'wallet', //我的 > 我的钱包
@@ -147,46 +164,65 @@ export default [{
 				component: require('../page/profile/sub/cards.vue'),
 				meta: {
 					title: '我的银行卡'
-				},
-				children: [{
-					name: 'add-card', //我的 > 我的银行卡 > 添加
-					path: '/profile-cards-add',
-					component: require('../page/profile/sub/cards-add.vue'),
-					meta: {
-						title: '绑定银行卡'
-					}
-				}]
+				}
+			},
+			{
+				name: 'add-card', //我的 > 我的银行卡 > 添加
+				path: '/profile-cards-add',
+				component: require('../page/profile/sub/cards-add.vue'),
+				meta: {
+					title: '绑定银行卡'
+				}
 			},
 			{
 				name: 'tickets', //我的 > 我的卡券
 				path: '/profile-tickets',
-				component: require('../page/index/sub/CardVolume.vue'),
+				component: require('../page/profile/sub/tickets.vue'),
 				meta: {
 					title: '我的卡券'
 				},
 				children: [{
-					name: 'debit', //我的 > 我的卡券 > 预付卡
-					path: '/profile-tickets-debit',
-					component: require('../page/profile/sub/tickets-debit.vue'),
-					meta: {
-						title: '预付卡'
-					},
-					children: [{
-						name: 'debit-recharge', //我的 > 我的卡券 > 预付卡充值
-						path: '/profile-tickets-debit-recharge',
-						component: require('../page/profile/sub/tickets-debit-recharge.vue'),
+						name: 'debit', //我的 > 我的卡券 > 预付卡
+						path: '/profile-tickets-debit',
+						component: require('../page/profile/sub/tickets-debit.vue'),
 						meta: {
-							title: '预付卡充值'
-						}
-					}]
-				}, {
-					name: 'electron', //我的 > 我的卡券 > 电子卡
-					path: '/profile-tickets-electron',
-					component: require('../page/profile/sub/tickets-electron.vue'),
-					meta: {
-						title: '电子卡'
+							title: '预付卡'
+						},
+						children: [{
+								name: 'debit-recharge', //我的 > 我的卡券 > 预付卡充值
+								path: '/profile-tickets-debit-recharge',
+								component: require('../page/profile/sub/tickets-debit-recharge.vue'),
+								meta: {
+									title: '预付卡充值'
+								}
+							},
+							{
+								name: 'debit-usernotice', //我的 > 我的卡券 > 预付卡充值 >使用须知
+								path: '/profile-tickets-usernotice',
+								component: require('../page/profile/sub/tickets-debit-usernotice.vue'),
+								meta: {
+									title: '使用须知'
+								}
+							}
+						]
+					},
+					{
+						name: 'electron', //我的 > 我的卡券 > 电子卷
+						path: '/profile-tickets-electron',
+						component: require('../page/profile/sub/tickets-electron.vue'),
+						meta: {
+							title: '电子卷'
+						},
+						children: [{
+							name: 'electron-usernotice', //我的 > 我的卡券 > 电子券详情 >使用须知\门店地址
+							path: '/profile-tickets-electron-usernotice',
+							component: require('../page/profile/sub/tickets-electron-usernotice.vue'),
+							meta: {
+								title: '使用须知'
+							}
+						}]
 					}
-				}]
+				]
 			}
 		]
 	},

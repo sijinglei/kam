@@ -16,13 +16,13 @@
 	<div class="cover va">
 		<div class="box form-row">
 			<div class="form-text">充值金额</div>
-			<input type="tel" placeholder="输入充值金额（单笔限额10000）" name="">
+			<input type="number" placeholder="输入充值金额（单笔限额10000）" value="" v-model="withdrawal">
 			<a class="clear_val" href="javascript:;"></a>
 		</div>
 	</div>
 	<div class="cover bal">
-		<span>可用余额￥10000.00，</span>		
-		<a class="w-all" href="javascript:;">全部提现</a>
+		<span>可用余额￥{{balance}}，</span>		
+		<a class="w-all" href="javascript:;" @click="withdrawal=balance">全部提现</a>
 	</div>
 	<div class="cover submit">
 		<a class="btn" href="javascript:;">确认充值</a>
@@ -42,7 +42,9 @@ export default {
 	data () {
 		return {
 			popupVisible : false,
-			fundcardlist : []
+			fundcardlist : [],
+			balance:10000.00,
+			withdrawal:''//提现金额
 		}
 	},mounted (){
 		this.fundcardlist.push.apply(this.fundcardlist,JSON.parse(_com.getSession('cardlist')));

@@ -74,22 +74,13 @@
 				</li>
 			</ul>
 		</div>
-		<!--<div class="page-swip2">
-																																																										<mt-swipe :auto="5500">
-																																																											<mt-swipe-item class="slide" v-for="d in homeimgelist">
-																																																												<a :href="d.href">
-																																																													<img :src="d.imagename" width="100%" />
-																																																												</a>
-																																																											</mt-swipe-item>
-																																																										</mt-swipe>
-																																																									</div>-->
 		<div class="hot-shop">
 			<p>热门商户<i></i></p>
 			<div class="product-list clearfix">
 				<ul>
 					<li v-for="d in homehotmerchant">
 						<router-link :to="{name:'consumptioninfo',params:{id:d.merchantid}}">
-							<img src="merchPath+d.imagename"
+							<img :src="merchPath+d.imagename"
 							     width="100%" />
 						</router-link>
 					</li>
@@ -104,9 +95,8 @@
 		<!--end-->
 	</section>
 </template>
-
 <script>
-import WechatJSSDK from 'wechat-jssdk/lib/client';
+// import WechatJSSDK from 'wechat-jssdk/lib/client';
 import download from '../../components/download.vue';
 import footer from '../../components/footer.vue';
 var wechatObj;
@@ -127,8 +117,10 @@ export default {
 				nonceStr: '',
 				signature: '',
 				jsApiList: [
-					'scanQRCode'
-				]
+					'scanQRCode',
+					'getLocation'
+				],
+				location: ''
 			}
 		}
 	},
@@ -138,56 +130,73 @@ export default {
 		if (code) _com.setCookie('code', code);
 		console.log(code);
 		if (code === '') {
-			vm.getAuthUrl();
+			// vm.getAuthUrl();
 		}
+		vm.setWxConfig();
+		vm.getLocation();
 		vm.gethomeimagelist();
 		vm.gethotmerchant();
 	},
 	methods: {
+		setWxConfig() {
+			var vm = this;
+			var weixin = {
+				GID: usages.api.weixin.getJsSign,
+				url: window.location.href.split('#')[0]
+			}
+			vm.$http.post(usages.domain, weixin).then((res) => {
+				var data = res.body.result;
+				console.log(res);
+				if (data && data.appid) {
+					// _com.setSession('wxconfig', JSON.stringify(data));
+					vm.wxconfig.appId = data.appid;
+					vm.wxconfig.timestamp = parseInt(data.timestamp);
+					vm.wxconfig.nonceStr = data.nonceStr;
+					vm.wxconfig.signature = data.signature;
+					window.wx.ready((res) => {
+						vm.getLocation();
+					});
+				}
+			});
+		},
 		getAuthUrl() { //获取微信认证
 			var vm = this;
 			var weixin = {
 				GID: usages.api.weixin.getAuthUrl,
-				redirect_uri: 'http://hf.tunnel.qydev.com/hf-km_web/main.jsp#/'
+				redirect_uri: 'http://hf.tunnel.qydev.com/hf-km_web/main.jsp'
 			}
 
 			vm.$http.post(usages.domain, weixin).then((res) => {
 				window.location.href = res.body.result.url;
 			});
 		},
+		getLocation() {
+			var vm = this;
+			window.wx.getLocation({
+				success: function (res) {
+					alert(JSON.stringify(res));
+
+					alert("获取地理位置成功！");
+				},
+				cancel: function (res) {
+					alert('用户拒绝授权获取地理位置');
+				}
+			});
+		},
+		getAddress(point) {
+			var map = new BMap.Map("allmap");
+			var point = new BMap.Point(116.331398, 39.897445);
+			var gc = new BMap.Geocoder();
+			gc.getLocation(point, function (rs) {
+				var addComp = rs.addressComponents;
+				// alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+				console.log(addComp.city);
+			});
+		},
 		scanQRCode() {
 			var vm = this;
-			var weixin = {
-				GID: usages.api.weixin.getJsSign,
-				url:window.location.href.split('#')[0]
-			}
-			var dataconfig = _com.getSession('wxconfig');
-			if (dataconfig) {
-				vm.getWxConfig(JSON.parse(dataconfig));
-			} else {
-				vm.$http.post(usages.domain, weixin).then((res) => {
-					var data = res.body.result;
-					console.log(res);
-					if (data && data.appid) {
-						_com.setSession('wxconfig', JSON.stringify(data));
-						vm.getWxConfig(data);
-					} else {
-						//console.log('异常')
-					}
-				});
-			}
-		},
-		getWxConfig(data) {
-			var vm = this;
-			vm.wxconfig.appId = data.appid;
-			vm.wxconfig.timestamp = parseInt(data.timestamp);
-			vm.wxconfig.nonceStr = data.nonceStr;
-			vm.wxconfig.signature = data.signature;
-			wechatObj = new WechatJSSDK(vm.wxconfig);
-			// window.wx.config(vm.wxconfig);
-			wechatObj.ready(() => {
-				this.ready = true;
-				this.scanQRCode({
+			wx.ready(function () {
+				window.wx.scanQRCode({
 					needResult: 1,
 					desc: 'scanQRCode desc',
 					success: function (res) {
@@ -195,10 +204,9 @@ export default {
 					}
 				});
 			});
-
 		},
-		gethomeimagelist() { //获取首页广告图
 
+		gethomeimagelist() { //获取首页广告图
 			var vm = this;
 			vm.formData.GID = usages.api.index.homepageimage;
 			vm.$http.post(usages.domain, vm.formData).then(function (res) {

@@ -137,12 +137,11 @@ export default {
             vm.$http.post(usages.domain, vm.formData).then(function (res) {
                 console.log(res);
                 if (res.body.issuccess) {
-
+                    this.$router.go(-1);
                 } else {
                     MintUI.Toast(res.body.rtnmessage);
                 }
             });
-            this.$router.go(-1);
         }
     },
     components: { checkArea }

@@ -58,6 +58,9 @@ export default {
 			deleteaddress:'member.express.deleteaddress',//5.6.7删除收货地址
 			createtransferorder:'member.qrcode.createtransferorder',//收款
 
+			modifylinkman:'member.modifylinkman',//4.1.12修改用户联系人
+
+
 		},
 		index : {
 			homepageimage:'app.website.homepageimage',//首页广告图

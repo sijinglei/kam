@@ -19,7 +19,7 @@
 		<router-link :to="{ name : 'withdraw' }" class="btn bg-white font-def">提现</router-link>
 	</div>
 	<div class="abs-bottom text-center">
-		<a class="font-gray">查看交易记录</a>
+		<router-link to="/TradingRecord" class="font-gray">查看交易记录</router-link>
 	</div>
 	<router-view></router-view>
 </section>

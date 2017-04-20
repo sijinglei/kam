@@ -152,7 +152,7 @@
     width: 3.33rem;
     height: 3.33rem;
     margin: 0 auto;
-    background: url('../../../assets/images/menu-icon.png') center center no-repeat;
+    background: url('../../images/menu-icon.png') center center no-repeat;
     background-size: cover;
 }
 

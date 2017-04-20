@@ -92,11 +92,13 @@
 }
 
 .va .va-row .va-row-title {
-    width: 3.5rem;
+    width: 4.5rem;
     display: inline-block;
 }
 
-.va .va-row .va-row-val {}
+.va .va-row .va-row-val {
+
+}
 
 .va .va-form>div {
     display: inline-block;
@@ -141,6 +143,10 @@
     height: 4rem;
     line-height: 4rem;
     font-size: 1.5rem;
+}
+.va-box .va-box-inner.cp>div{
+    background: #95CBF0;
+    color:#fff;
 }
 
 .va .va-ele {

@@ -30,10 +30,9 @@ export default {
 					userid : _com.getSession('userid'),
 					GID : usages.api.user.fundcardlist
 				};
-
 			vm.$http.post(usages.domain,_p).then(function(res){
-				if( res.data.issuccess ){
-					vm.cardlist.push.apply(vm.cardlist,res.data.result.cardlist);
+				if( res.body.issuccess ){
+					vm.cardlist.push.apply(vm.cardlist,res.body.result.cardlist);
 				}else{
 					MintUI.Toast('获取绑定的银行卡失败')
 				}

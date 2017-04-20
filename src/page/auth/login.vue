@@ -106,7 +106,7 @@ export default {
 						_com.setSession('phone', vm.username);
 						_com.setSession('userid', res.body.result.userid);
 						console.log(99999);
-						vm.$router.push({name:'profile'});
+						vm.$router.push({name:'index'});
 					} else {
 						vm.popupMsg = res.body.rtnmessage;
 						vm.popupVisible = true;

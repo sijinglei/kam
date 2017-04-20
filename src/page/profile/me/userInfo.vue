@@ -20,8 +20,8 @@
 				<div class="item-title fl">
 					真实姓名
 				</div>
-				<div class="item-info fr">
-					{{ formData.realname }}
+				<div class="item-info fr" @click="realName">
+					{{ formData.realname||'未实名' }}
 				</div>
 			</div>
 			<div class="field arrows-right">
@@ -39,7 +39,7 @@
 					常用地址
 				</div>
 				<div class="item-info fr"
-				     @click="usual()">
+				     @click="usual(1)">
 					{{usualaddress}}
 				</div>
 			</div>
@@ -47,8 +47,8 @@
 				<div class="item-title fl">
 					联系人信息
 				</div>
-				<div class="item-info fr">
-					未填写
+				<div class="item-info fr" @click="usual(2)">
+					{{linkuser}}
 				</div>
 			</div>
 		</div>
@@ -79,6 +79,7 @@ export default {
 			certid: '',//身份证号
 			realname: '',//用户姓名
 			usualaddress: '未填写',//常用地址
+			linkuser:'未填写',
 			userid: _com.getSession('userid')
 		}
 	},
@@ -87,8 +88,16 @@ export default {
 		vm.formData = JSON.parse(_com.getSession('userInfo'));
 		vm.queryrealnameinfo();
 		vm.querydefaultaddress();
+		 var linkinfo = _com.getSession('linkinfo');
+        if (linkinfo) {
+            let d = JSON.parse(linkinfo);
+            vm.linkuser = d.linkuser;
+        }
 	},
 	methods: {
+		realName(){
+			this.$router.push("/realnameinfo");
+		},
 		querydefaultaddress() {
 			var vm = this;
 			var data = {
@@ -98,7 +107,7 @@ export default {
 			vm.$http.post(usages.domain, data).then(function (res) {
 				console.log(res);
 				if (res.body.issuccess) {
-					vm.usualaddress = res.body.result.address;
+					vm.usualaddress = res.body.result.address||'未填写';
 				} else {
 					vm.usualaddress = '未填写';
 				}
@@ -120,8 +129,12 @@ export default {
 				}
 			});
 		},
-		usual() {
+		usual(type) {
+			if(type==1){
 			this.$router.push("/usualaddress");
+			}else{
+			this.$router.push("/linkmanadd");
+			}
 		},
 		//我的二维码
 		showQRCode() {

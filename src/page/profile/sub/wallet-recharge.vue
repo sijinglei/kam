@@ -20,7 +20,8 @@
 			<a class="clear_val" href="javascript:;"></a>
 		</div>
 	</div>
-	<div class="p-col"><input type="checkbox" name="">我已阅读并同意<a>《卡盟平台用户服务协议》</a></div>
+	 <agree v-on:bindCheck="bindCheck"
+                  :link="linkobj"></agree>
 	<div class="cover submit">
 		<a class="btn" @click="subData" href="javascript:;">确认充值</a>
 	</div>
@@ -36,10 +37,16 @@
 <script>
 
 import myBanks from '../../../components/myBanks.vue'
-
+import agree from '../../../components/agreement.vue';//协议组件
 export default {
 	data () {
 		return {
+			 linkobj: {
+                linkurl: 'profile-wallet',
+                linktitle: '卡盟平台用户服务协议',
+				style:'margin-top:-1rem;'
+            },
+			isActive:false,
 			popupVisible : false,
 			amount : '',
 			fundcardlist : []
@@ -47,6 +54,9 @@ export default {
 	},mounted (){
 		this.fundcardlist.push.apply(this.fundcardlist,JSON.parse(_com.getSession('cardlist')));
 	},methods : {
+		  bindCheck(isAgree) {
+            this.isActive = isAgree;
+        },
 		getBankNo (bankno){
 			console.log(bankno)
 			this.popupVisible = false;
@@ -72,7 +82,7 @@ export default {
 		  	});
 		}
 	},components : {
-		myBanks
+		myBanks,agree
 	}
 }
 </script>

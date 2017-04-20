@@ -53,7 +53,7 @@
     width: 3.33rem;
     height: 3.33rem;
     margin: 0 auto;
-    background: url('../../../assets/images/menu-icon.png') center center no-repeat;
+    background: url('../../images/menu-icon.png') center center no-repeat;
     background-size: cover;
 }
 
@@ -131,7 +131,7 @@
     display: inline-block;
     width: 2.4rem;
     height: 1.6rem;
-    background: url('../../../assets/images/hot.png') no-repeat;
+    background: url('../../images/hot.png') no-repeat;
     background-size: cover;
     margin-left: 0.2rem;
 }
