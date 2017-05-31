@@ -1,7 +1,7 @@
 /*!
  * 常用方法
- * 吴正全
- * zennqann@foxmail.com
+ * 司惊雷
+ * 645001895@qq.com
  * 2017-03-28
  */
 
@@ -17,7 +17,7 @@ export default {
     getSession(key) {
         return localStorage.getItem(key);
     },
-    vuerifyCheck: function (vm, arr) {
+    vuerifyCheck: function(vm, arr) {
 
         if (!vm.$vuerify.check(arr)) {
             for (var i in vm.$vuerify.$errors) {
