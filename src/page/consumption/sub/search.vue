@@ -62,7 +62,7 @@
     
             <div class="no-datalist"
                  v-if="merchantList.length==0">
-                <img src="Resources/h5/dist/images/no-data.png"
+                <img src="./../../../assets/images/no-data.png"
                      style="margin-top:5rem;">
             </div>
         </div>

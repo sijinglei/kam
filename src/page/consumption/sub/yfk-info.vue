@@ -9,7 +9,8 @@ body .pay-page {
         <div class="search-list p_info">
             <div class="item Fix">
                 <div class="pic">
-                    <img :src="merchPath+result.imageid">
+                    <img :src="result.imageid">
+                    <!-- <img :src="merchPath+result.imageid"> -->
                 </div>
                 <div class="content">
                     <div class="name">
@@ -69,9 +70,10 @@ export default {
     methods: {
         querycardinfo() {
             var vm = this;
-            vm.$http.post(usages.domain, vm.formData).then(function (res) {
-                if (res.body.issuccess) {
-                    vm.result = res.body.result;
+            // vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                vm.$http.get('http://yfkinfo').then(function (res) {
+                if (res.ok) {
+                    vm.result = res.body.data;
                 } else {
                     vm.errMsg(res.body.rtnmessage);
                 }

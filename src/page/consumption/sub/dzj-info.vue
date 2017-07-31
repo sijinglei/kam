@@ -13,7 +13,8 @@ body .pay-page {
         <div class="search-list p_info">
             <div class="item Fix">
                 <div class="pic">
-                    <img :src="merchPath+result.imageid">
+                    <img :src="result.imageid">
+                    <!-- <img :src="merchPath+result.imageid"> -->
                 </div>
                 <div class="content">
                     <div class="name">
@@ -21,7 +22,7 @@ body .pay-page {
                             <span class="p_name">{{result.ticketname}}</span>
                         </div>
                     </div>
-                     <p>有效期至：{{parseInt(result.validitytype)===1?result.validity:(result.validity+'天')}}</p>
+                     <p>有效期至：{{parseInt(result.validitytype)==1?result.validity:(result.validity+'天')}}</p>
                     <p>已售：{{result.ticketnumber-result.salenumber}}张</p>
                 </div>
             </div>
@@ -101,11 +102,12 @@ export default {
     methods: {
         querymerticketinfo() {
             var vm = this;
-            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+            // vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                vm.$http.get('http://dzjinfo').then(function (res) {
                 console.log(res);
-                if (res.body.issuccess) {
-                    vm.result = res.body.result;
-                    vm.price=res.body.result.ticketprice;//电子券单价
+                if (res.ok) {
+                    vm.result = res.body.data;
+                    vm.price=res.body.data.ticketprice;//电子券单价
                 } else {
                     vm.errMsg(res.body.rtnmessage);
                 }
@@ -123,7 +125,8 @@ export default {
                     this.number--;
                 }
             }
-            this.total = this.number * this.price;
+            console.log(this.price);
+            this.total = (this.number * parseFloat(this.price)).toFixed(2);
         },
         handleClick() {
             var vm = this;
