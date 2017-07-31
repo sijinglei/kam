@@ -109,7 +109,7 @@
                             <div class="j_info">
                                 <h3>{{item.cardshortname}}</h3>
                                 <div class="j_price">
-                                    <span class="now_price">￥{{item.cardprice * item.radio}}</span>
+                                    <span class="now_price">￥{{(item.cardprice * item.radio).toFixed(2)}}</span>
                                     <span><del>￥{{item.cardprice}}</del></span>
                                 </div>
                             </div>
@@ -186,6 +186,7 @@ import mockData from '../../../util/mock';
                     }
                 });
             }
+
         }
     }
 </script>
