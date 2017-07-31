@@ -1,4 +1,5 @@
 <style>
+
 body .mint-popup-kmtop {
 	width: 100%;
 	height: 40px;
@@ -16,7 +17,7 @@ body .mint-popup-kmtop {
 	<section class="page login">
 		<div class="logo">
 			<div>
-				<img src="Resources/h5/dist/images/my/logo.png"
+				<img src="../../assets/images/my/logo.png"
 				     alt="logo">
 			</div>
 		</div>

@@ -18,14 +18,17 @@
     margin-top: 3.4rem;
 }
 
-.no-datalist{
+.no-datalist {
     text-align: center;
 }
-.no-datalist img{
+
+.no-datalist img {
     width: 9.2rem;
     height: auto;
     margin-top: 15rem;
 }
+
+
 /******************下载*******************/
 
 .download {
@@ -74,7 +77,7 @@
     width: 7.8rem;
     height: 2.8rem;
     border: 1px solid #2791DA;
-    color:#2791DA;
+    color: #2791DA;
     border-radius: 4px;
     text-align: center;
     line-height: 2.8rem;
@@ -312,7 +315,6 @@
     top: 0.5rem;
     left: 1.2rem;
 }
-
 
 .col-field .number input[type='number'] {
     border: none;

@@ -72,7 +72,7 @@
                     <router-link :to="{name:'consumptioninfo',params:{id:d.merchantid}}"
                                  class="item Fix">
                         <div class="pic">
-                            <img :src="merchPath+d.imageid">
+                            <img :src="d.imageid">
                         </div>
                         <div class="content">
                             <div class="name">
@@ -214,13 +214,14 @@ export default {
         },
         querymerchantlist() {
             var vm = this;
-            vm.$http.post(usages.domain, vm.formData).then(function (res) {
+            // vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                vm.$http.get('http://merchantList').then(function (res) {
                 console.log(res.body);
                 var datalist = res.body
-                if (datalist.issuccess) {
-                    vm.merchantList = datalist.result.merchantlist || [];
+                if (res.ok) {
+                    vm.merchantList = datalist.data || [];
                 } else {
-                    vm.errMsg(datalist.rtnmessage);
+                    vm.errMsg(res.rtnmessage);
                 }
             }).then((res) => {
                 MintUI.Indicator.close();

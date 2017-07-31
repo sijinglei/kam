@@ -13,7 +13,8 @@
         <div class="search-list p_info">
             <div class="item Fix">
                 <div class="pic">
-                    <img :src="merchPath+result.imageid">
+                    <!-- <img :src="merchPath+result.imageid"> -->
+                    <img :src="result.imageid">
                 </div>
                 <div class="content">
                     <div class="name">
@@ -67,7 +68,7 @@
                         <router-link :to="{name:'dzjinfo',params:{id:item.ticketbatchid,merchantid:formData.merchantid}}">
                             <div class="left-con fl">
                                 <div class="j_img">
-                                    <img :src="merchPath+item.imageid">
+                                    <img :src="item.imageid">
                                 </div>
                                 <div class="j_info">
                                     <h3>{{item.ticketshortname}}</h3>
@@ -103,7 +104,7 @@
                     <li class="clearfix" v-for="item in yfkList">
                         <div class="left-con fl">
                             <div class="j_img">
-                                <img :src="merchPath+item.imageid">
+                                <img :src="item.imageid">
                             </div>
                             <div class="j_info">
                                 <h3>{{item.cardshortname}}</h3>
@@ -126,6 +127,8 @@
 </template>
 
 <script>
+
+import mockData from '../../../util/mock';
     export default {
         data() {
             return {
@@ -143,6 +146,7 @@
         mounted() {
             var vm = this;
             vm.formData.merchantid =vm.$route.params.id;
+            console.log(vm.$route.params);
             vm.queryinfo();
             vm.queryDzjList();
             vm.queryYfkList();
@@ -150,32 +154,35 @@
         methods: {
             queryinfo() {
                 var vm = this;
-                vm.$http.post(usages.domain, vm.formData).then(function (res) {
-                    
-                    if (res.body.issuccess) {
-                        vm.result = res.body.result;
+                // vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                    vm.$http.get('http://queryinfo').then(function (res) {
+                        console.log(res);
+                    if (res.ok) {
+                        vm.result = res.body.data;
                     }
                 });
             },
             queryDzjList() {
                 var vm = this;
                 vm.formData.GID = usages.api.consumption.querymerticketlist;
-                vm.$http.post(usages.domain, vm.formData).then(function (res) {
-                    console.log(res);
-                    if (res.body.issuccess) {
-                        console.log(res.body.result);
-                        vm.dzjList = res.body.result.ticketlist;
-                        console.log(vm.dzjList);
+
+                // vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                  vm.$http.get('http://dzjList').then(function (res) {
+                 console.log(res);
+                    if (res.ok) {
+                        console.log(res.body.data);
+                        vm.dzjList = res.body.data;
                     }
                 });
             },
             queryYfkList() {
                 var vm = this;
                 vm.formData.GID = usages.api.consumption.querymerlist;
-                vm.$http.post(usages.domain, vm.formData).then(function (res) {
-                    console.log(res);
-                    if (res.body.issuccess) {
-                        vm.yfkList = res.body.result.cardlist;
+                // vm.$http.post(usages.domain, vm.formData).then(function (res) {
+                   vm.$http.get('http://yfkList').then(function (res) {
+                  console.log(res);
+                    if (res.ok) {
+                        vm.yfkList = res.body.data;
                     }
                 });
             }
